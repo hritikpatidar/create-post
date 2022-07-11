@@ -1,0 +1,8 @@
+.bgimg{
+    background-image: url('../../assets/images/12.webp');
+    width: 520px;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}

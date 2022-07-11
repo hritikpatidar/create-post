@@ -1,0 +1,9 @@
+.border{
+    margin-top: 25px;
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 5px 1px 18px #888888;
+}
+.r-margin{
+    margin-top: 5px !important;
+}
