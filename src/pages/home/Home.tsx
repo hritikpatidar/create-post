@@ -22,7 +22,8 @@ function Home() {
     //state/hooks 
     const [userPost, setUserPost] = useState<any>([])
     useEffect(() => {
-        handalUserPost()
+        handalUserPost();
+        createPostTime();
     }, [])
 
     // function defination
@@ -42,14 +43,20 @@ function Home() {
                     Authorization: `Bearer ${token}`
                 }
             })
-           
+            console.log(response)
             setUserPost(response.data.data)
+            
+
         } catch (error) {
             console.log(error)
         }
     }
 
-    
+    let createPostTime=()=>{
+        // console.log('okokok')
+        let newData = new Date(userPost.dateCreated)
+        console.log(newData)
+    }
     //return statement
     return (
         <Container maxWidth="sm">
@@ -64,27 +71,33 @@ function Home() {
                                 <Typography variant="subtitle1" gutterBottom component="div">
                                     Description- {cv?.description}
                                 </Typography>
-                                {
-                                    cv?.images?.map((item: any, index: number) => {
+
+                                <ImageList sx={{ minwidth: 500, minheight: 450 }} variant="quilted" cols={2} rowHeight={auto}>
+                                    {cv?.images?.map((item: any, index: number) => {
+                                        const col = cv.images.length==1 ? 2 : 1  
+                                        const row = cv.images.length==1 ? 2 : 1
                                         
-                                      return(
-                                        <React.Fragment key={index}>
-                                            <ImageList sx={{ minwidth: 500, minheight: 450 }} cols={1} rowHeight={auto}>
-                                                    <ImageListItem>
+                                        return(
+                                            <React.Fragment key={index}>
+                                                <ImageListItem key={index} cols={col} rows={row}>
                                                     <img
-                                                        src={item.image}
+                                                        src={`${item.image}`}
+                                                        srcSet={`${item.image}`}
+                                                        alt={item.title}
                                                         loading="lazy"
                                                     />
-                                                    </ImageListItem>
-                                               
-                                            </ImageList>
-                                        </React.Fragment >
-                                        
+                                                </ImageListItem>
+                                            </React.Fragment>
                                         )
-                                    })
-                                }
-
+                                    })}
+                                </ImageList>
+                                <Typography variant="subtitle1" gutterBottom component="div">
+                                    {
+                                        
+                                    }
+                                </Typography>
                             </CardContent>
+                            
                             <Grid container spacing={0} columns={16}>
                                 <Grid item xs={8}>
                                     <Item><FavoriteBorderIcon /></Item>

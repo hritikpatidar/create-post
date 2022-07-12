@@ -6,9 +6,9 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { ImageListItem } from '@mui/material';
 
 var FormData = require('form-data');
 
@@ -32,14 +32,26 @@ function DeshBoard() {
     let handalImageChange=(e:any)=>{
         const file = [...e.target.files]
         userDetails.images = file;
-        Array.from(e.target.files).forEach((file:any) => {
+        // Array.from(e.target.files).forEach((file:any) => {
             
+        //     const reader = new FileReader();
+        //     reader.onload =()=>{
+        //             setImage( (prevState:any) => [...prevState, reader.result]);
+        //     }
+        //     reader.readAsDataURL(file);
+        // });
+
+        for(let element of e.target.files){
+            debugger
             const reader = new FileReader();
-            reader.onload =()=>{
-                    setImage( (prevState:any) => [...prevState, reader.result]);
+            reader.onload=()=>{
+                setImage((prevState:any)=>[...prevState , reader.result]);
             }
-            reader.readAsDataURL(file);
-        });
+            reader.readAsDataURL(element)
+        }
+
+
+      
     }
     let handalChange=(e:any)=>{
         const {name,value} = e.target;
@@ -57,7 +69,7 @@ function DeshBoard() {
         userDetails.images.forEach((file:any)=>{
             newData.append("images", file);
         });
-        console.log("temparr",newData)
+        // console.log("temparr",newData)
         try {
             const res = await axios.post("http://192.168.1.11:8010/api/post",newData,{
                 headers:{
@@ -76,7 +88,7 @@ function DeshBoard() {
             console.log(error)
         }
     }
-    // console.log("image",image)
+    console.log("image",image)
     // console.log("userDetails",userDetails)
     return (
         <Container maxWidth="lg">
@@ -117,16 +129,25 @@ function DeshBoard() {
                         fullWidth
                     />
 
-                    <ImageList sx={{ minwidth: 500, minheight: 450 }} cols={3} rowHeight={264}>
-                        {image.map((item:any,index:number) => (
-                            <ImageListItem key={index}>
-                            <img
-                                src={item}
-                                loading="lazy"
-                            />
-                            </ImageListItem>
-                        ))}
+                    <ImageList sx={{ minwidth: 500, minheight: 450 }} cols={2} rowHeight={264}>
+                        {   
+                           
+                            image.map((item:any,index:number) => {
+                                
+                                return(
+                                    <ImageListItem key={index} >
+                                        <img
+                                            src={item}
+                                            loading="lazy"
+                                        />
+                                    </ImageListItem>
+                                )
+                                
+                            })       
+                                       
+                        }
                     </ImageList>
+                    
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={handalPost} fullWidth>Post</Button>
