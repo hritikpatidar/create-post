@@ -42,7 +42,6 @@ function DeshBoard() {
         // });
 
         for(let element of e.target.files){
-            debugger
             const reader = new FileReader();
             reader.onload=()=>{
                 setImage((prevState:any)=>[...prevState , reader.result]);
